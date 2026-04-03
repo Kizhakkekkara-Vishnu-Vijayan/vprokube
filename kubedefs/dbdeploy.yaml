@@ -31,10 +31,10 @@ spec:
                 key: db-pass
       volumes:
         - name: vpro-db-data
-          PersistentVolumeClaim:
+          persistentVolumeClaim:
             claimName: db-pv-claim
       
-      initcontainers:
+      initContainers:
         - name: busybox
           image: busybox:latest
           args: ["rm", "rf", "/var/lib/mysql/lost+found"]
