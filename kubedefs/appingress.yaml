@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: kubevpro.vishnuhosting.xyz
+  - host: vprofile.vishnuhosting.xyz
     http:
       paths:
        - path: /
