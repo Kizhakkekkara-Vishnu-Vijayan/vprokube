@@ -9,3 +9,9 @@ db:
     repository: docvishnu1/vprofiledb
     tag: latest
     pullPolicy: IfNotPresent
+
+web:
+  image:
+    repository: docvishnu1/vprofileweb
+    tag: latest
+    pullPolicy: IfNotPresent
