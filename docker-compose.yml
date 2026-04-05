@@ -1,9 +1,8 @@
-version: '3.8'
 services:
   vprodb:
     build: 
       context: ./Docker-files/db
-    image: vprocontainers/vprofiledb
+    image: docvishnu1/vprofiledb
     container_name: vprodb
     ports:
       - "3306:3306"
@@ -11,39 +10,52 @@ services:
       - vprodbdata:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=vprodbpass
+    mem_limit: 512m
 
   vprocache01:
     image: memcached
+    container_name: vprocache01
     ports:
       - "11211:11211"
+    mem_limit: 128m
 
   vpromq01:
     image: rabbitmq
+    container_name: vpromq01
     ports:
       - "5672:5672"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    mem_limit: 256m
 
   vproapp:
     build: 
       context: ./Docker-files/app
-    image: vprocontainers/vprofileapp
+    image: docvishnu1/vprofileapp
     container_name: vproapp
     ports:
       - "8080:8080"
     volumes:
       - vproappdata:/usr/local/tomcat/webapps
-    
+    environment:
+      - JAVA_OPTS=-Xms128m -Xmx256m
+    mem_limit: 512m
+    depends_on:
+      - vprodb
+
   vproweb:
+    restart: always
     build: 
       context: ./Docker-files/web
-    image: vprocontainers/vprofileweb
+    image: docvishnu1/vprofileweb
     container_name: vproweb
     ports:
       - "80:80"
+    mem_limit: 128m
+    depends_on:
+      - vproapp
 
 volumes:
    vprodbdata: {}
    vproappdata: {}
-  
