@@ -1,0 +1,11 @@
+app:
+  image:
+    repository: docvishnu1/vprofileapp
+    tag: latest
+    pullPolicy: IfNotPresent
+
+db:
+  image:
+    repository: docvishnu1/vprofiledb
+    tag: latest
+    pullPolicy: IfNotPresent
