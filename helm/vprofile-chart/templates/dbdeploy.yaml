@@ -6,6 +6,10 @@ metadata:
     app: vprodb
 spec:
   replicas: 1
+
+  strategy:
+    type: Recreate
+
   selector:
     matchLabels:
       app: vprodb
@@ -19,6 +23,15 @@ spec:
         #image: docvishnu1/vprofiledb
         image: "{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
         imagePullPolicy: {{ .Values.db.image.pullPolicy }}
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100
+            memory: 128Mi
+
         volumeMounts:
         - mountPath: /var/lib/mysql
           name: vpro-db-data

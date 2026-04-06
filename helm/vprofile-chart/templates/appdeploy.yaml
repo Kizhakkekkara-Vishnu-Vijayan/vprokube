@@ -6,6 +6,13 @@ metadata:
     app: vproapp
 spec:
   replicas: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
   selector:
     matchLabels:
       app: vproapp
@@ -20,17 +27,31 @@ spec:
         #image: docvishnu1/vprofileapp:{{ "{{ .Values.image.tag }}" }}
         image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
         imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+
         ports:
         - name: vproapp-port
           containerPort: 8080
 
       initContainers:
-       - name: init-db
-         image: busybox:1.28
-         command: ['sh', '-c', "until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
-       - name: init-memcache
-         image: busybox:1.28
-         command: ['sh', '-c', "until nslookup vprocache01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
-       - name: init-rabbitmq
-         image: busybox:1.28
-         command: ['sh', '-c', "until nslookup vpromq01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+      - name: init-all
+        image: busybox:1.28
+        command: ['sh', '-c', "
+        echo waiting...;
+        sleep 10;
+
+        until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for db; sleep 2; done;
+
+        until nslookup vprocache01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for cache; sleep 2; done;
+
+        until nslookup vpromq01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mq; sleep 2; done;
+
+        echo all services ready;
+        "]
