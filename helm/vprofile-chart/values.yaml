@@ -8,6 +8,15 @@ db:
     repository: docvishnu1/vprofiledb
     tag: latest
     pullPolicy: IfNotPresent
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+
 web:
   image:
     repository: docvishnu1/vprofileweb

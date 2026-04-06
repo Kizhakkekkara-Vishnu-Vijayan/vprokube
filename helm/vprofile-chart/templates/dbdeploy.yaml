@@ -25,12 +25,7 @@ spec:
         imagePullPolicy: {{ .Values.db.image.pullPolicy }}
 
         resources:
-          requests:
-            cpu: 50m
-            memory: 64Mi
-          limits:
-            cpu: 100
-            memory: 128Mi
+        {{- toYaml .Values.db.resources | nindent 10 }}
 
         volumeMounts:
         - mountPath: /var/lib/mysql
@@ -44,6 +39,15 @@ spec:
               secretKeyRef:
                 name: app-secret
                 key: db-pass
+
+         - name: MYSQL_INNODB_BUFFER_POOL_SIZE
+           value: "64M"
+         - name: MYSQL_INNODB_LOG_BUFFER_SIZE
+           value: "8M"
+         - name: MYSQL_MAX_CONNECTIONS
+           value: "50"
+
+
       volumes:
         - name: vpro-db-data
           persistentVolumeClaim:

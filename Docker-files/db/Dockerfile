@@ -1,9 +1,15 @@
 FROM mysql:8.0.33
-LABEL "Project"='Vprofile'
+
+LABEL "Project"="Vprofile"
 LABEL "Author"="Vishnu"
 
-ENV MYSQL_ROOT_PASSWORD="vprodbpass"
-ENV MYSQL_DATABASE="accounts"
+# Basic DB setup
+ENV MYSQL_ROOT_PASSWORD=vprodbpass
+ENV MYSQL_DATABASE=accounts
 ENV MYSQL_ROOT_HOST=%
 
-ADD db_backup.sql docker-entrypoint-initdb.d/db_backup.sql
+# Copy DB init script
+COPY db_backup.sql /docker-entrypoint-initdb.d/
+
+# 🔥 Correct CMD format (single line OR properly closed array)
+CMD ["mysqld","--innodb-buffer-pool-size=64M","--innodb-log-buffer-size=8M","--max_connections=50","--performance-schema=OFF"]
