@@ -1,14 +1,13 @@
 app:
   image:
     repository: docvishnu1/vprofileapp
-    tag: "24040084720"
+    tag: "24047014048"
     pullPolicy: IfNotPresent
 db:
   image:
     repository: docvishnu1/vprofiledb
     tag: latest
     pullPolicy: IfNotPresent
-
   resources:
     requests:
       cpu: 100m
@@ -16,7 +15,6 @@ db:
     limits:
       cpu: 300m
       memory: 512Mi
-
 web:
   image:
     repository: docvishnu1/vprofileweb
