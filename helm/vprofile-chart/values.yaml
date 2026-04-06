@@ -1,15 +1,13 @@
 app:
   image:
     repository: docvishnu1/vprofileapp
-    tag: latest
+    tag: "24024300919"
     pullPolicy: IfNotPresent
-
 db:
   image:
     repository: docvishnu1/vprofiledb
     tag: latest
     pullPolicy: IfNotPresent
-
 web:
   image:
     repository: docvishnu1/vprofileweb
