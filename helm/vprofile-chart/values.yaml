@@ -1,7 +1,7 @@
 app:
   image:
     repository: docvishnu1/vprofileapp
-    tag: "24070976999"
+    tag: "24071347329"
     pullPolicy: IfNotPresent
 db:
   image:
