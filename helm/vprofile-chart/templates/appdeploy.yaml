@@ -30,12 +30,11 @@ spec:
 
         resources:
           requests:
-            cpu: 50m
-            memory: 64Mi
+            cpu: 200m
+            memory: 512Mi
           limits:
-            cpu: 100m
-            memory: 128Mi
-
+            cpu: 500m
+            memory: 1024Mi
         ports:
         - name: vproapp-port
           containerPort: 8080
